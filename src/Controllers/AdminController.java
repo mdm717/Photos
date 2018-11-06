@@ -1,8 +1,8 @@
 /* 
- * ListController Class
+ * AdminController Class
  * 
  * 		This class creates the main UI for the user to add, edit, and
- * 		delete songs from a list
+ * 		delete Users from a list
  * 
  */
 package Controllers;
@@ -52,7 +52,7 @@ public class AdminController extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Song Library");
+		primaryStage.setTitle("Users");
 		primaryStage.setResizable(false);
 		try {
 			Parent root= FXMLLoader.load(getClass().getResource("AdminSub.fxml"));

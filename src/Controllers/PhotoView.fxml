@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <ImageView id="imgView" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
@@ -29,7 +28,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <BorderPane.margin>
-            <Insets top="25.0" />
+            <Insets bottom="10.0" top="25.0" />
          </BorderPane.margin>
          <children>
             <Button id="prev" mnemonicParsing="false" text="&lt;&lt;" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
@@ -64,8 +63,14 @@
                <GridPane.margin>
                   <Insets left="5.0" />
                </GridPane.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </Button>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
       </GridPane>
    </bottom>
    <right>

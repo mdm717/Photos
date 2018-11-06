@@ -40,7 +40,7 @@ public class LoginHandler {
             	if(line.equals(name)) {
             		br.close();
                     LoginView.prompt("Username");
-            		System.exit(0);
+                    (new UserController()).start(LoginView.getMainStage());
             		return true;
             	}
             	line = br.readLine();
