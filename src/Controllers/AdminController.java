@@ -8,9 +8,15 @@
 package Controllers;
 	
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Optional;
 
 import com.sun.glass.events.WindowEvent;
@@ -54,24 +60,35 @@ public class AdminController extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Users");
 		primaryStage.setResizable(false);
+		
 		try {
 			Parent root= FXMLLoader.load(getClass().getResource("AdminSub.fxml"));
 			scene = new Scene(root);
 			listView = (ListView<User>) scene.lookup("#listView");
 			listView.setItems(data);
 			name = (TextField) scene.lookup("#UserIn");
-			
+
+			try {
+				fileRead();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 			sort();
 			
 			primaryStage.setOnCloseRequest(e -> {
+			try {
+				fileWrite();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		        Platform.exit();
 		        System.exit(0);
 		    });
 			
-			try {System.out.println("DDD");
-			
 			String file = "src/resources/Users.txt";
-
+/*
             BufferedReader br = new BufferedReader(new FileReader(file));System.out.println("FFF");
         	String line = br.readLine();
         	System.out.println(line);
@@ -79,10 +96,7 @@ public class AdminController extends Application {
             	data.add(new User(line));
             	line = br.readLine();
             }
-            br.close();
-        } catch (FileNotFoundException e) {
-        	e.printStackTrace();
-        }
+            br.close();*/
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -277,6 +291,34 @@ public class AdminController extends Application {
 	
 	private static void clear() {
 		name.setText("");
+	}
+
+	
+	private static void fileWrite() throws IOException {
+		FileWriter fw = new FileWriter("src/resources/Users.txt");
+		BufferedWriter bw = new BufferedWriter(fw);
+		System.out.println(data.size());
+		for(int i=0; i<data.size(); i++)
+		{
+			System.out.println(data.get(i).getName());
+			bw.write(data.get(i).getName());
+			
+			bw.newLine();
+		}
+		bw.close();
+	}
+	
+	private static void fileRead() throws IOException{
+		InputStream fis = new FileInputStream("src/resources/Users.txt");
+		InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
+		BufferedReader br = new BufferedReader(isr);
+		String line = br.readLine();
+		
+		while (line != null) {
+        	data.add(new User(line));
+        	line = br.readLine();
+        }
+        br.close();
 	}
 
 	private static void missingInfo(Stage mainStage) {
