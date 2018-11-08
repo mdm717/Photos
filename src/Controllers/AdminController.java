@@ -7,16 +7,9 @@
  */
 package Controllers;
 	
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Optional;
 
 import com.sun.glass.events.WindowEvent;
@@ -44,8 +37,8 @@ import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
-public class AdminController extends Application {
-	public static final ObservableList<User> data = FXCollections.observableArrayList();
+public class AdminController extends Application implements Serializable {
+	public static ObservableList<User> data = FXCollections.observableArrayList();
 	private static ListView<User> listView;
 	private static Stage mainStage;
 	private static Scene scene;
@@ -55,6 +48,14 @@ public class AdminController extends Application {
 	private static int count; //counts items in list
 	private static int action = -1;
 	private static int index = -1;
+	
+	public static final String storeDir = "src/resources";
+	public static final String storeFile = "Users.dat";
+	
+	public AdminController() {}
+	public AdminController(ObservableList<User> d) {
+		data = d;
+	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -69,20 +70,27 @@ public class AdminController extends Application {
 			name = (TextField) scene.lookup("#UserIn");
 
 			try {
-				fileRead();
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
+				AdminController.readApp();
+			} catch (ClassNotFoundException e2) {
+				 //TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (Exception e2) {
+
 				e2.printStackTrace();
 			}
 			sort();
 			
 			primaryStage.setOnCloseRequest(e -> {
-			try {
-				fileWrite();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+				
+				try {
+					writeApp(new AdminController(data));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				removeDups();
+				
 		        Platform.exit();
 		        System.exit(0);
 		    });
@@ -114,6 +122,27 @@ public class AdminController extends Application {
 		
 //		listView.getSelectionModel().selectedIndexProperty().addListener( (obs, oldVal, newVal) -> showInfo(newVal));
 */	}
+	
+	public static void writeApp(AdminController ac) throws IOException {
+			ObjectOutputStream oos = new ObjectOutputStream(
+			new FileOutputStream(storeDir + File.separator + storeFile));
+			oos.writeObject(ac.data.toArray(new User[0]));
+	}
+	
+	public static void readApp() throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(
+		new FileInputStream(storeDir + File.separator + storeFile));
+		AdminController ac = new AdminController();
+		User[] users = (User[]) ois.readObject();
+		
+		for (int i = 0; i < users.length; i++) {
+			ac.data.add(users[i]);
+		}
+		
+		sort();
+		
+		System.out.println(ac.toString());
+	} 
 	
 	public void handler(int a) {
 		switch (a) {
@@ -147,14 +176,13 @@ public class AdminController extends Application {
 	private void add(ActionEvent e) {
 		action=0;
 		Text text = (Text) scene.lookup("#op");
-		text.setText("Enter Information For New Song");
-		
-		clear();
+		text.setText("Enter Information For New Name and Confirm");
 	}
 	
 	@FXML
 	private void logOut(ActionEvent e) {
 		try {
+			writeApp(this); 
 			(new LoginView()).start(mainStage);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -167,8 +195,7 @@ public class AdminController extends Application {
 		if (!(data.isEmpty())) {
 			action=1;
 			Text text = (Text) scene.lookup("#op");
-			text.setText("Change Information For Editted Song");
-			clear();
+			text.setText("Change Information For Edited Name and Confirm");
 			index = listView.getSelectionModel().getSelectedIndex();
 			name.setText(data.get(index).getName());
 		}
@@ -178,7 +205,10 @@ public class AdminController extends Application {
 	private void delete(ActionEvent e) {
 		if (!(data.isEmpty())) {
 			action=2;
-			data.remove(listView.getSelectionModel().getSelectedIndex());
+			Text text = (Text) scene.lookup("#op");
+			index = listView.getSelectionModel().getSelectedIndex();
+			text.setText("Confirm To Delete " + ((User)data.get(index)).getName());
+			name.setText(data.get(index).getName());
 			
 		}
 	}
@@ -191,18 +221,17 @@ public class AdminController extends Application {
 			break;
 		case 0:
 			boolean failed=false;
-			boolean newSong=true;
+			boolean newName=true;
 			
 			for (int i = 0; i < data.size(); i++) {
-				if (s.equals(data.get(i))) {		
-					//If either the song title or artist is missing, do nothing
-					newSong=false;
+				if (s.getName().equals(((User)data.get(i)).getName())) {		
+					newName=false;
 				}
 			}
 			if ( s.getName().equals("")) {
 				missingInfo(mainStage);
 			}
-			else if (newSong) {//if at least title and artist are provided add the song to the end of the list
+			else if (newName) {
 				data.add(s);
 				index++;
 			}
@@ -220,13 +249,12 @@ public class AdminController extends Application {
 			}
 			break;
 		case 1:
-			newSong=true;
+			newName=true;
 			failed=false;
 			
 			for (int i = 0; i < data.size(); i++) {
-				if (s.equals(data.get(i))) {		
-					//If either the song title or artist is missing, do nothing
-					newSong=false;
+				if (s.getName().equals(((User)data.get(i)).getName())) {		
+					newName=false;
 				}
 			}
 			if (index==-1) {index++;}
@@ -235,8 +263,7 @@ public class AdminController extends Application {
 			}
 			for (int i = 0; i < data.size(); i++) {
 				if (s.equals(data.get(i)) && i != index) {		
-					//If either the song title or artist is missing, do nothing
-					newSong=false;
+					newName=false;
 				}
 			}
 			if (s.getName().equals(null)) {
@@ -244,10 +271,9 @@ public class AdminController extends Application {
 				failed=true;
 				
 			}
-			else if (newSong) {//if at least title and artist are provided add the song to the end of the list
+			else if (newName) {
 				data.remove(index);
 				data.add(new User(name.getText()));
-				listView.getSelectionModel().select(data.size()-1);
 			}
 			else {
 				showAlert(mainStage);
@@ -262,9 +288,20 @@ public class AdminController extends Application {
 				text.setText("Please Select An Operation");
 			}
 			break;
+		case 2:
+			int i = listView.getSelectionModel().getSelectedIndex();
+			data.remove(listView.getSelectionModel().getSelectedIndex());
+			try{
+				listView.getSelectionModel().select(i-1);
+			}catch(Exception e2) {}
+			showInfo(data.size()-1);
+			sort();
+			Text text = (Text) scene.lookup("#op");
+			text.setText("Please Select An Operation");
 		default:
 			break;
 		}
+		listView.getSelectionModel().selectFirst();
 	}
 	
 	public static void showInfo(Number newVal) {
@@ -275,50 +312,34 @@ public class AdminController extends Application {
 	
 	private static void sort() {
 		
-		 for (int i = 0; i < data.size(); i++) 
-	        {
-	            for (int j = i + 1; j < data.size(); j++) 
-	            {
-	                if (data.get(i).toString().compareTo(data.get(j).toString())>0) 
-	                {
-	                    User s = new User(data.get(i).getName());
-	                    data.set(i, data.get(j));
-	                    data.set(j, s);
-	                }
-	            }
-	        }
+		for (int i = 0; i < data.size(); i++) 
+        {
+            for (int j = i + 1; j < data.size(); j++) 
+            {
+                if (data.get(i).toString().compareTo(data.get(j).toString())>0) 
+                {
+                    User s = new User(data.get(i).getName());
+                    data.set(i, data.get(j));
+                    data.set(j, s);
+                }
+            }
+        }
+		removeDups();
+	}
+	
+	private static void removeDups() {
+		if(data.size()>1) {
+			for (int i = 1; i < data.size();i++) {
+				if (data.get(i).getName().equals(data.get(i-1).getName())) {
+					data.remove(i);
+					i--;
+				}
+			}
+		}
 	}
 	
 	private static void clear() {
 		name.setText("");
-	}
-
-	
-	private static void fileWrite() throws IOException {
-		FileWriter fw = new FileWriter("src/resources/Users.txt");
-		BufferedWriter bw = new BufferedWriter(fw);
-		System.out.println(data.size());
-		for(int i=0; i<data.size(); i++)
-		{
-			System.out.println(data.get(i).getName());
-			bw.write(data.get(i).getName());
-			
-			bw.newLine();
-		}
-		bw.close();
-	}
-	
-	private static void fileRead() throws IOException{
-		InputStream fis = new FileInputStream("src/resources/Users.txt");
-		InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-		BufferedReader br = new BufferedReader(isr);
-		String line = br.readLine();
-		
-		while (line != null) {
-        	data.add(new User(line));
-        	line = br.readLine();
-        }
-        br.close();
 	}
 
 	private static void missingInfo(Stage mainStage) {
@@ -334,9 +355,19 @@ public class AdminController extends Application {
 		 Alert message = new Alert(AlertType.INFORMATION);
 		 message.initOwner(mainStage);
 		 message.setTitle("List Item");
-		 message.setHeaderText("Song Already Exists");
+		 message.setHeaderText("Name Already Exists");
 		 String content = "THIS NAME IS ALREADY TAKEN."; 
 		 message.setContentText(content);
 		 message.showAndWait();
 	} 
+	
+	public String toString() {
+		String str = "names";
+		
+		for (int i = 0; i < data.size(); i++) {
+			str += "\n"+data.get(i).getName();
+		}
+		
+		return str;
+	}
 }

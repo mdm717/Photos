@@ -1,7 +1,11 @@
 package Controllers;
 
 import java.awt.Button;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,17 +19,33 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class LoginView extends Application{
+public class LoginView extends Application implements Serializable{
 
 	private static Stage mainStage;
 	private static Scene scene;
 	private static TextField tf;
+
+	public static final String storeDir = "src/resources";
+	public static final String storeFile = "Users.dat";
+	public static AdminController ac;
+	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		primaryStage.setTitle("Log In");
 		primaryStage.setResizable(false);
+
+		try {
+			AdminController.readApp();
+		} catch (ClassNotFoundException e2) {
+			 //TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (Exception e2) {
+
+			e2.printStackTrace();
+		}
+		
 		try {
 			Parent root= FXMLLoader.load(getClass().getResource("Login.fxml"));
 			scene = new Scene(root);
@@ -33,6 +53,13 @@ public class LoginView extends Application{
 			tf = (TextField) scene.lookup("#text");
 			
 			primaryStage.setOnCloseRequest(e -> {
+
+				try {
+					AdminController.writeApp(ac);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		        Platform.exit();
 		        System.exit(0);
 		    });
