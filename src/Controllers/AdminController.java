@@ -1,10 +1,4 @@
-/* 
- * AdminController Class
- * 
- * 		This class creates the main UI for the user to add, edit, and
- * 		delete Users from a list
- * 
- */
+
 package Controllers;
 	
 import java.io.*;

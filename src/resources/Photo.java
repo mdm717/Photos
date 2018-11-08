@@ -13,10 +13,11 @@ public class Photo implements Serializable {
 	public Photo(String u, Date d) {url=u;date=d;}
 	public Photo(String u, String s) {url=u;caption=s;}
 	public Photo(String u, String s, Date d) {url=u;date=d;caption=s;}
+	
+	
 	public Date getDate() {
 		return date;
 	}
-	
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -62,6 +63,8 @@ public class Photo implements Serializable {
 			
 			ptr=ptr.next;
 		}
+		ptr.next=new TagType(type, new Tag(data, null), null);
+		return;
 	}
 	
 	public boolean deleteTag(String type, String data) {
