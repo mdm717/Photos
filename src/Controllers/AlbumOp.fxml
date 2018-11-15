@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UserController">
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
@@ -17,14 +17,14 @@
       <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <children>
-      <Button id="create" mnemonicParsing="false" text="Create" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Button id="create" mnemonicParsing="false" onAction="#create" text="Create" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets bottom="10.0" top="10.0" />
          </GridPane.margin>
       </Button>
-      <Button id="rename" mnemonicParsing="false" text="Rename" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <Button id="delete" mnemonicParsing="false" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <Button id="open" mnemonicParsing="false" text="Open" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+      <Button id="rename" mnemonicParsing="false" onAction="#rename" text="Rename" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+      <Button id="delete" mnemonicParsing="false" onAction="#delete" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+      <Button id="open" mnemonicParsing="false" onAction="#open" text="Open" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
    </children>
    <padding>
       <Insets bottom="10.0" top="10.0" />
