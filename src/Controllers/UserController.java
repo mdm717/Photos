@@ -82,13 +82,10 @@ public class UserController extends Application {
 		dialog.setTitle("Album Name Input");
 		dialog.setHeaderText("Enter Album Name: ");
 		dialog.showAndWait();
-		if(dialog.getEditor().getText().equals(null)) {
-			System.out.println("OH");
-		}
+		if(dialog.getEditor().getText().equals(null)) { }
 		else {
 			data.add(new Album(dialog.getEditor().getText().toString()));
 			index++;
-			//sort();
 		}
 		
 	}
@@ -115,10 +112,11 @@ public class UserController extends Application {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Rename Album");
 		dialog.setHeaderText("New Album Name: ");
-		Optional<String> result = dialog.showAndWait();
-		if(result.isPresent()) {
+		if(dialog.getEditor().getText().equals(null)) { }
+		else {
 			
 		}
+		
 	}
 	
 }
