@@ -116,7 +116,7 @@ public class UserController extends Application {
 		int i = listView.getSelectionModel().getSelectedIndex();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirm Delete");
-		alert.setHeaderText("Really Delete This Album?");
+		alert.setHeaderText("Are You Sure You Wish to Delete This Album? All Pictures in the Album will be Lost.");
 		Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() == ButtonType.OK) {
 			data.remove(listView.getSelectionModel().getSelectedIndex());
@@ -141,7 +141,7 @@ public class UserController extends Application {
 		
 		if(dialog.getEditor().getText().equals(null)) { }
 		else {
-			
+
 		}
 		
 	}
