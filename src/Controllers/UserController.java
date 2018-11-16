@@ -1,9 +1,12 @@
 package Controllers;
 	
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Optional;
 
 import com.sun.glass.events.WindowEvent;
@@ -76,20 +79,39 @@ public class UserController extends Application {
 		mainStage= primaryStage;
 	}
 
+	
+	
 	@FXML
 	public void create(ActionEvent e) {
-		TextInputDialog dialog = new TextInputDialog();
+		boolean exists = false;
+		TextInputDialog dialog = new TextInputDialog();		
 		dialog.setTitle("Album Name Input");
 		dialog.setHeaderText("Enter Album Name: ");
 		dialog.showAndWait();
 		if(dialog.getEditor().getText().equals(null)) { }
 		else {
-			data.add(new Album(dialog.getEditor().getText().toString()));
-			index++;
+			String name = dialog.getEditor().getText().toString();
+			Album a = new Album(name);//dialog.getEditor().getText().toString());
+			
+			for(int i=0; i<data.size(); i++) {
+				if(a.getAlbumName().equals(data.get(i).getAlbumName())) {
+					exists = true;
+					Alert error = new Alert(AlertType.INFORMATION);
+					error.setTitle("Creation Error");
+					error.setHeaderText(null);
+					error.setContentText("Sorry, an Album with this Name Already Exists.  Please Choose a Different Name.");
+					error.showAndWait();
+				}
+			}
+			if(!exists) {
+				data.add(new Album(name));
+				index++;
+			}
 		}
 		
 	}
 	
+	@FXML
 	public void delete(ActionEvent e) {
 		int i = listView.getSelectionModel().getSelectedIndex();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -104,19 +126,36 @@ public class UserController extends Application {
 		}
 	}
 	
+	@FXML
 	public void open(ActionEvent e) {
 		
 	}
 	
+	@FXML
 	public void rename(ActionEvent e) {
+		index = listView.getSelectionModel().getSelectedIndex();
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Rename Album");
 		dialog.setHeaderText("New Album Name: ");
+		dialog.showAndWait();
+		
 		if(dialog.getEditor().getText().equals(null)) { }
 		else {
 			
 		}
 		
 	}
+	
+	@FXML
+	public void logout(ActionEvent e) {
+		try {
+			//writeApp(this); 
+			(new LoginView()).start(mainStage);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	
 }
