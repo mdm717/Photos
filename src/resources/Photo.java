@@ -9,10 +9,10 @@ public class Photo implements Serializable {
 	private String url;
 	private String caption;
 	
-	public Photo(String u) {url=u;}
-	public Photo(String u, Date d) {url=u;date=d;}
-	public Photo(String u, String s) {url=u;caption=s;}
-	public Photo(String u, String s, Date d) {url=u;date=d;caption=s;}
+	public Photo(String url) {this.url=url;}
+	public Photo(String url, Date date) {this.url=url;this.date=date;}
+	public Photo(String url, String caption) {this.url=url;this.caption=caption;}
+	public Photo(String url, String caption, Date date) {this.url=url;this.date=date;this.caption=caption;}
 	
 	
 	public Date getDate() {
