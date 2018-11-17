@@ -18,7 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 
 public class LoginHandler {
-
+	public static String name = "";
 	@FXML
 	private void Login(ActionEvent event) {
 		if (LoginView.getText().
@@ -28,6 +28,7 @@ public class LoginHandler {
 		} else {
 			for (int i = 0; i < LoginView.ac.data.size(); i++) {
 				if (LoginView.ac.data.get(i).getName().equals(LoginView.getText())) {
+					name=LoginView.getText();
                     LoginView.prompt("Username");
                     (new UserController()).start(LoginView.getMainStage());
 				}

@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Optional;
 
 import com.sun.glass.events.WindowEvent;
@@ -46,6 +48,9 @@ public class UserController extends Application {
 	private static Scene scene;
 
 	private static TextField name;
+	private static String file = "src/albums";
+	private static String ext = ".dat";
+	private static String separator = "/";
 
 	private static int count; //counts items in list
 	private static int action = -1;
@@ -58,6 +63,22 @@ public class UserController extends Application {
 		try {
 			Parent root= FXMLLoader.load(getClass().getResource("PhotoLibSub.fxml"));
 			scene = new Scene(root);
+			
+			File[] fileList = new File(file).listFiles(new FilenameFilter() {
+			    public boolean accept(File dir, String name) {
+			        return name.startsWith(LoginHandler.name) && name.endsWith(".dat");
+			    }
+			});
+			
+			data.clear();
+			
+			for (int i = 0; i < fileList.length; i++) {
+				int j;
+				for (j = fileList[i].toString().length()-1; fileList[i].toString().charAt(j) != '/'; j--);
+				String newFile = fileList[i].toString().substring(j+1+LoginHandler.name.length()+1, fileList[i].toString().length()-4);
+				System.out.println(newFile);
+				data.add(new Album(newFile));
+			}
 			
 			listView = (ListView<Album>) scene.lookup("#list");
 			listView.setItems(data);
@@ -104,8 +125,26 @@ public class UserController extends Application {
 				}
 			}
 			if(!exists) {
-				data.add(new Album(name));
-				index++;
+
+				try {
+					if (name.contains("/")) {
+						Alert error = new Alert(AlertType.INFORMATION);
+						error.setTitle("Creation Error");
+						error.setHeaderText(null);
+						error.setContentText("Contains Illegal Character. Please Do Not Use '/' In The Album Name.");
+						error.showAndWait();
+					} else {
+						(new File(file + separator + LoginHandler.name + "_" + name + ext)).createNewFile();
+						data.add(new Album(name));
+						index++;
+					}
+				} catch (IOException e1) {
+					Alert error = new Alert(AlertType.INFORMATION);
+					error.setTitle("Creation Error");
+					error.setHeaderText(null);
+					error.setContentText("Unexpected Error. Album Might Already Exist. Please Try A Different Name.");
+					error.showAndWait();
+				}
 			}
 		}
 		
@@ -119,6 +158,9 @@ public class UserController extends Application {
 		alert.setHeaderText("Are You Sure You Wish to Delete This Album? All Pictures in the Album will be Lost.");
 		Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() == ButtonType.OK) {
+			String albumName = listView.getSelectionModel().getSelectedItem().toString();
+			File delFile = new File (file + separator + LoginHandler.name + "_" + albumName + ext);
+			delFile.delete();
 			data.remove(listView.getSelectionModel().getSelectedIndex());
 			try {
 				listView.getSelectionModel().select(i-1);
@@ -141,7 +183,31 @@ public class UserController extends Application {
 		
 		if(dialog.getEditor().getText().equals(null)) { }
 		else {
-
+			
+			if (dialog.getEditor().getText().contains("/")) {
+				Alert error = new Alert(AlertType.INFORMATION);
+				error.setTitle("Creation Error");
+				error.setHeaderText(null);
+				error.setContentText("Contains Illegal Character. Please Do Not Use '/' In The Album Name.");
+				error.showAndWait();
+			} else {
+				boolean newFile = true;
+				for (int i = 0; i < data.size(); i++) {
+					if (data.get(i).toString().equals(dialog.getEditor().getText())) {
+						newFile = false;
+						break;
+					}
+				}
+				
+				if (newFile) {
+					File of = new File(file + separator + LoginHandler.name + "_" + data.get(index).toString() + ext);
+					File nf = new File(file + separator + LoginHandler.name + "_" + dialog.getEditor().getText() + ext);
+					
+					of.renameTo(nf);
+					
+					data.set(index, new Album(dialog.getEditor().getText()));
+				}
+			}
 		}
 		
 	}
