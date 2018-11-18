@@ -1,13 +1,10 @@
 package resources;
 
 import java.io.Serializable;
+import resources.PhotoNode;
 
 public class Album implements Serializable{
-	/*public static String albumName;
 	
-	public Album(String str) {
-		albumName = str;
-	}*/
 	
 	private String albumName;
 	
