@@ -67,7 +67,7 @@ public class AdminController extends Application implements Serializable {
 		primaryStage.setResizable(false);
 		
 		try {
-			Parent root= FXMLLoader.load(getClass().getResource("AdminSub.fxml"));
+			Parent root= FXMLLoader.load(getClass().getResource("/Controllers/AdminSub.fxml"));
 			scene = new Scene(root);
 			listView = (ListView<User>) scene.lookup("#listView");
 			listView.setItems(data);
@@ -244,11 +244,24 @@ public class AdminController extends Application implements Serializable {
 	private void delete(ActionEvent e) {
 		if (!(data.isEmpty())) {
 			action=2;
+
 			Text text = (Text) scene.lookup("#op");
 			index = listView.getSelectionModel().getSelectedIndex();
-			text.setText("Confirm To Delete " + ((User)data.get(index)).getName());
-			name.setText(data.get(index).getName());
+			String username = ((User)data.get(index)).getName();
+			text.setText("Confirm To Delete " + username);
 			
+			name.setText(data.get(index).getName());
+			String file = "src/albums";
+			String ext = ".dat";
+			String separator = "/";
+			File[] fileList = new File(file).listFiles(new FilenameFilter() {
+			    public boolean accept(File dir, String name) {
+			        return name.startsWith(username) && name.endsWith(".dat");
+			    }
+			});
+			for (File f:fileList) {
+				f.delete();
+			}
 		}
 	}
 	

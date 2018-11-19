@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import com.sun.glass.events.WindowEvent;
@@ -56,13 +57,14 @@ public class AlbumController extends Application implements Serializable{
 	private static Stage mainStage;
 	private static Scene scene;
 	private static ImageView img;
+	private static int index = 0;
+	
+	private ArrayList<Photo> list;
 
 	public static final String storeDir = "src/albums";
 	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
 	
 	public static Album album;
-	private PhotoNode pn;
-	
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");
 		primaryStage.setResizable(false);
@@ -70,7 +72,6 @@ public class AlbumController extends Application implements Serializable{
 			Parent root= FXMLLoader.load(getClass().getResource("PhotoView.fxml"));
 			scene = new Scene(root);
 			img = (ImageView) scene.lookup("#imgView");
-			writeApp(new Album());
 			primaryStage.setOnCloseRequest(e -> {
 				try {
 					writeApp(album);
@@ -90,14 +91,9 @@ public class AlbumController extends Application implements Serializable{
 		
 		try {
 			readApp();
-			
-			if (album.startNode.isEmpty()) {
-			//	img.setImage(new Image(null));
-				
-			}else {
-				pn = album.startNode;
-				img.setImage(new Image(pn.data.getUrl()));
-			}
+		
+			System.out.println(list.get(index).getUrl()+'\n'+list.get(index+1).getUrl());
+			img= new ImageView(list.get(index).getUrl());
 			
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
@@ -113,12 +109,18 @@ public class AlbumController extends Application implements Serializable{
 	
 	@FXML
 	public void prev(ActionEvent e) {
-		
+		if (index>0) {
+			index--;
+			img= new ImageView(list.get(index).getUrl());
+		}
 	}
 	
 	@FXML
 	public void next(ActionEvent e) {
-		
+		if (index<list.size()) {
+			index++;
+			img= new ImageView(list.get(index).getUrl());
+		}
 	}
 	
 	/**
@@ -130,10 +132,7 @@ public class AlbumController extends Application implements Serializable{
 	public static void writeApp(Album album) throws IOException {
 			ObjectOutputStream oos = new ObjectOutputStream(
 			new FileOutputStream(storeDir + File.separator + storeFile));
-//			oos.writeObject(album);
-			Album test = new Album("AllTheSmallThings");
-			test.startNode=new PhotoNode(new Photo("/Users/craigsirota/Downloads/Qoikos.jpg"));
-			oos.writeObject(test);
+			oos.writeObject(album);
 	}
 	
 	/**

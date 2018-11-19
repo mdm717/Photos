@@ -36,7 +36,7 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <Button fx:i d="edit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" text="Edit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               <Button fx:id="edit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" text="Edit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                <Button fx:id="add" layoutX="80.0" layoutY="42.0" mnemonicParsing="false" onAction="#add" text="Add" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                <Button fx:id="del" layoutX="10.0" layoutY="42.0" mnemonicParsing="false" onAction="#delete" text="Delete" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                <Text id="op" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Select An Operation" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />

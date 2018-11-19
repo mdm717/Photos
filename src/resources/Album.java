@@ -1,6 +1,8 @@
 package resources;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
 import resources.PhotoNode;
 
 /**
@@ -12,7 +14,7 @@ import resources.PhotoNode;
 public class Album implements Serializable{
 	
 	private String albumName;
-	public PhotoNode startNode;
+	public ArrayList<Photo> list;
 	
 	public Album() {}
 	

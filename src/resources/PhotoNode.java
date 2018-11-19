@@ -42,4 +42,33 @@ public class PhotoNode implements Serializable {
 		}
 		return false;
 	}
+	
+	public void add(PhotoNode newNode) {
+		PhotoNode ptr = this;
+		while (ptr.next != null) {
+			ptr = ptr.next;
+		}
+		ptr.next=newNode;
+		ptr.next.prev=ptr;
+	}
+	
+	public void delete() {
+		if (prev == null && next == null) {
+			data = null;
+			return;
+		} else if (prev == null) {
+			data = next.data;
+			next.next.prev = this;
+			next = next.next;
+			return;
+		} else if (next == null) {
+			data = null;
+			prev.next = null;
+			return;
+		} else if (prev != null && next != null) {
+			prev.next = next;
+			next.prev = prev;
+			return;
+		}
+	}
 }
