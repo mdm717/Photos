@@ -56,6 +56,8 @@ public class UserController extends Application {
 	private static int action = -1;
 	private static int index = -1;
 	
+	public static String albumName;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");
@@ -72,13 +74,13 @@ public class UserController extends Application {
 			
 			data.clear();
 			
-			/*for (int i = 0; i < fileList.length; i++) {
+			for (int i = 0; i < fileList.length; i++) {
 				int j;
 				for (j = fileList[i].toString().length()-1; fileList[i].toString().charAt(j) != '/'; j--);
 				String newFile = fileList[i].toString().substring(j+1+LoginHandler.name.length()+1, fileList[i].toString().length()-4);
 				System.out.println(newFile);
 				data.add(new Album(newFile));
-			}*/
+			}
 			
 			listView = (ListView<Album>) scene.lookup("#list");
 			listView.setItems(data);
@@ -172,6 +174,7 @@ public class UserController extends Application {
 	public void open(ActionEvent e) {
 		try {
 			//writeApp(this); 
+			albumName = listView.getSelectionModel().getSelectedItem().getAlbumName();
 			(new AlbumController()).start(mainStage);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block

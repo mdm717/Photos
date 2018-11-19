@@ -12,6 +12,7 @@ import resources.PhotoNode;
 public class Album implements Serializable{
 	
 	private String albumName;
+	public PhotoNode startNode;
 	
 	public Album() {}
 	

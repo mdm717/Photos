@@ -1,15 +1,17 @@
 package resources;
 
+import java.io.Serializable;
+
 /**
  * PhotoNode.java - This class creates a linked list of photos
  * @author Craig Sitora cms631
  * @author Matthew Marrazzo mdm289
  */
 
-public class PhotoNode {
+public class PhotoNode implements Serializable {
 	public Photo data;
-	public Photo next;
-	public Photo prev;
+	public PhotoNode next;
+	public PhotoNode prev;
 	
 	/**
 	 * This method creates the first photo node in the linked list
@@ -28,8 +30,16 @@ public class PhotoNode {
 	 * @param next		next photo object in the linked list
 	 */
 	
-	public PhotoNode(Photo data, Photo prev, Photo next) {
+	public PhotoNode(Photo data, PhotoNode prev, PhotoNode next) {
 		this.data=data;
 		this.next=next;
+		this.prev=prev;
+	}
+	
+	public boolean isEmpty() {
+		if (data.equals(null)) {
+			return true;
+		}
+		return false;
 	}
 }
