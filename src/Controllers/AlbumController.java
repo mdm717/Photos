@@ -40,10 +40,18 @@ import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+/**
+ * AlbumController.java - This class controls Photos in an Album
+ * @author Matthew Marrazzo mdm289
+ * @author Craig Sirota cms631
+ */
+
 public class AlbumController extends Application{
 
 	private static Stage mainStage;
 	private static Scene scene;
+	
+	public  ;
 	
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");

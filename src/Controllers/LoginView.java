@@ -19,6 +19,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * LoginView.java - This class loads the 
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ */
+
+
 public class LoginView extends Application implements Serializable{
 
 	private static Stage mainStage;
@@ -29,6 +36,12 @@ public class LoginView extends Application implements Serializable{
 	public static final String storeFile = "Users.dat";
 	public static AdminController ac;
 	
+	
+	/**
+	 * 
+	 * @param primaryStage
+	 * @throws Exception
+	 */
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -73,14 +86,29 @@ public class LoginView extends Application implements Serializable{
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	
 	public static String getText() {
 		return tf.getText();
 	}
+	
+	/**
+	 * 
+	 * @param str
+	 */
 	
 	public static void prompt(String str) {
 		tf.setText(null);
 		tf.setPromptText(str);
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	
 	public static Stage getMainStage() {
 		return mainStage;

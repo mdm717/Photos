@@ -1,5 +1,11 @@
 package resources;
 
+/**
+ * Tag.java - 
+ * @author cms631
+ * @author mdm289
+ */
+
 public class Tag {
 	public Tag next;
 	private String data;

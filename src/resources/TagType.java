@@ -1,5 +1,11 @@
 package resources;
 
+/**
+ * TagType.java - 
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ */
+
 public class TagType {
 
 	public String type;

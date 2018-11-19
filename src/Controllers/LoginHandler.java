@@ -17,8 +17,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 
+/**
+ * LoginHandler.java - This class runs when a user attempts to login
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ *
+ */
+
 public class LoginHandler {
 	public static String name = "";
+	
+	/**
+	 * This method checks what type of account is attempting to login
+	 * If they are an Admin, then the Admin main page will load
+	 * If they are a regular User, then the User main page will load
+	 * @param event
+	 */
+	
 	@FXML
 	private void Login(ActionEvent event) {
 		if (LoginView.getText().

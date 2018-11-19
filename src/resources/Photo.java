@@ -3,6 +3,12 @@ package resources;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Photo.java - This class defines the Photo object 
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ */
+
 public class Photo implements Serializable {
 	private Date date;
 	private TagType tags; // 2D linked list, first linked list is type of tag, tags.next => the next type, tags.data => linked list of tags

@@ -1,4 +1,3 @@
-
 package Controllers;
 	
 import java.io.*;
@@ -31,6 +30,12 @@ import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+/**
+ * AdminController.java - This class controls the Admin page
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ */
+
 public class AdminController extends Application implements Serializable {
 	public static ObservableList<User> data = FXCollections.observableArrayList();
 	private static ListView<User> listView;
@@ -50,6 +55,11 @@ public class AdminController extends Application implements Serializable {
 	public AdminController(ObservableList<User> d) {
 		data = d;
 	}
+	
+	/**
+	 * This method loads the home page after the Admin logs in
+	 * @param primaryStage		 
+	 */
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -117,11 +127,23 @@ public class AdminController extends Application implements Serializable {
 //		listView.getSelectionModel().selectedIndexProperty().addListener( (obs, oldVal, newVal) -> showInfo(newVal));
 */	}
 	
+	/**
+	 * This method writes a list of current users out to a file for later use
+	 * @param ac
+	 * @throws IOException
+	 */
+	
 	public static void writeApp(AdminController ac) throws IOException {
 			ObjectOutputStream oos = new ObjectOutputStream(
 			new FileOutputStream(storeDir + File.separator + storeFile));
 			oos.writeObject(ac.data.toArray(new User[0]));
 	}
+	
+	/**
+	 * This method reads the list of current users from a file
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	
 	public static void readApp() throws IOException, ClassNotFoundException {
 		ObjectInputStream ois = new ObjectInputStream(
@@ -137,6 +159,11 @@ public class AdminController extends Application implements Serializable {
 		
 		System.out.println(ac.toString());
 	} 
+	
+	/**
+	 * 
+	 * @param a
+	 */
 	
 	public void handler(int a) {
 		switch (a) {
@@ -166,6 +193,11 @@ public class AdminController extends Application implements Serializable {
 		}
 	}
 	
+	/**
+	 * This method is called when the Add button is pressed to add a new user
+	 * @param e		a button press
+	 */
+	
 	@FXML
 	private void add(ActionEvent e) {
 		action=0;
@@ -173,6 +205,10 @@ public class AdminController extends Application implements Serializable {
 		text.setText("Enter Information For New Name and Confirm");
 	}
 	
+	/**
+	 * This method is called when the Logout button is pressed to return to Login Page
+	 * @param e		a button press
+	 */
 	@FXML
 	private void logOut(ActionEvent e) {
 		try {
@@ -183,6 +219,11 @@ public class AdminController extends Application implements Serializable {
 			e1.printStackTrace();
 		}
 	}
+	
+	/**
+	 * This method is called when the Edit button is pressed to edit an existing user
+	 * @param e		a button press
+	 */
 	
 	@FXML
 	private void edit(ActionEvent e) {
@@ -195,6 +236,10 @@ public class AdminController extends Application implements Serializable {
 		}
 	}
 	
+	/**
+	 * This method is called when the Delete button is pressed to delete a user
+	 * @param e		a button press
+	 */
 	@FXML
 	private void delete(ActionEvent e) {
 		if (!(data.isEmpty())) {
@@ -206,6 +251,12 @@ public class AdminController extends Application implements Serializable {
 			
 		}
 	}
+	
+	/**
+	 * This method is called when the Confirm button is pressed and executes the proper action
+	 * number that corresponds to Add, Edit, or Delete
+	 * @param e		a button press
+	 */
 	
 	@FXML
 	private void confrim(ActionEvent e) {
@@ -298,12 +349,21 @@ public class AdminController extends Application implements Serializable {
 		listView.getSelectionModel().selectFirst();
 	}
 	
+	/**
+	 * 
+	 * @param newVal
+	 */
+	
 	public static void showInfo(Number newVal) {
 		if (!(data.isEmpty())) {
 			name.setText(data.get((int) newVal).getName());
 		}
 	}
 	
+	
+	/**
+	 * This method sorts the listview to have the users in alphabetical order
+	 */
 	private static void sort() {
 		
 		for (int i = 0; i < data.size(); i++) 
@@ -321,6 +381,10 @@ public class AdminController extends Application implements Serializable {
 		removeDups();
 	}
 	
+	/**
+	 * This method removes duplicate usernames which are created in the editing process
+	 */
+	
 	private static void removeDups() {
 		if(data.size()>1) {
 			for (int i = 1; i < data.size();i++) {
@@ -332,10 +396,18 @@ public class AdminController extends Application implements Serializable {
 		}
 	}
 	
+	/**
+	 * This method clears the
+	 */
+	
 	private static void clear() {
 		name.setText("");
 	}
 
+	/**
+	 * This method informs the Admin that they have invalid input when creating or editing a username
+	 * @param mainStage
+	 */
 	private static void missingInfo(Stage mainStage) {
 		 Alert message = new Alert(AlertType.INFORMATION);
 		 message.initOwner(mainStage);
@@ -345,6 +417,11 @@ public class AdminController extends Application implements Serializable {
 		 message.setContentText(content);
 		 message.showAndWait();
 	} 
+	
+	/**
+	 * This method informs the Admin if they are trying to create a duplicate username
+	 * @param mainStage
+	 */
 	private static void showAlert(Stage mainStage) {
 		 Alert message = new Alert(AlertType.INFORMATION);
 		 message.initOwner(mainStage);
@@ -354,6 +431,11 @@ public class AdminController extends Application implements Serializable {
 		 message.setContentText(content);
 		 message.showAndWait();
 	} 
+	
+	/**
+	 * This converts the usernames to string variables
+	 * @return str		the string variable for the username
+	 */
 	
 	public String toString() {
 		String str = "names";

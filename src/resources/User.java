@@ -2,6 +2,12 @@ package resources;
 
 import java.io.Serializable;
 
+/**
+ * User.java - 
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ */
+
 public class User implements Serializable{
 	private String name;
 	
