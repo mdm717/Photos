@@ -21,6 +21,7 @@ import com.sun.glass.events.WindowEvent;
 import resources.Album;
 import resources.Photo;
 import resources.PhotoNode;
+import resources.Tag;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -60,9 +61,9 @@ public class AlbumController extends Application implements Serializable{
 	private static Stage mainStage;
 	private static Scene scene;
 	private static ImageView img;
+	private static ListView tagList;
 	private static int index = -1;
-	
-	private ArrayList<Photo> list = new ArrayList<Photo>();
+	private ObservableList<Photo> list = FXCollections.observableArrayList();
 	
 	private Desktop desktop = Desktop.getDesktop();
 
@@ -77,8 +78,10 @@ public class AlbumController extends Application implements Serializable{
 			Parent root= FXMLLoader.load(getClass().getResource("PhotoView.fxml"));
 			scene = new Scene(root);
 			img = (ImageView) scene.lookup("#imgView");
+			tagList = (ListView) scene.lookup("#tagView");
 			primaryStage.setOnCloseRequest(e -> {
 				try {
+					album.list.setAll(list);
 					writeApp(album);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -94,16 +97,18 @@ public class AlbumController extends Application implements Serializable{
 			e1.printStackTrace();
 		}
 		
-		/*try {
+		try {
 			readApp();
-		
-			System.out.println(list.get(index).getUrl()+'\n'+list.get(index+1).getUrl());
-			img= new ImageView(list.get(index).getUrl());
+			if (index > -1)
+				img= new ImageView(list.get(index).getUrl());
 			
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (ClassNotFoundException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		} catch( IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		
@@ -119,16 +124,19 @@ public class AlbumController extends Application implements Serializable{
 				File file = new File(list.get(index).getUrl());
 				Image image = new Image(file.toURI().toString());
 				img.setImage(image);
+				tagList.setItems(list.get(index).getTags());
+				
 			}
 	}
 	
 	@FXML
 	public void next(ActionEvent e) {
-		if (index<list.size()) {
+		if (index<list.size()-1) {
 			index++;
 			File file = new File(list.get(index).getUrl());
 			Image image = new Image(file.toURI().toString());
 			img.setImage(image);
+			tagList.setItems(list.get(index).getTags());
 		}
 	}
 	
@@ -138,10 +146,10 @@ public class AlbumController extends Application implements Serializable{
 		fileChooser.setTitle("Select a photo");
 		File path = fileChooser.showOpenDialog(mainStage);
 		if(path != null) {
-			index++;
 			Photo picture = new Photo(path.toString());
 			list.add(picture);
 			Image image = new Image(path.toURI().toString());
+			index = list.size()-1;
 			img.setImage(image);
 			
 		}
@@ -151,13 +159,32 @@ public class AlbumController extends Application implements Serializable{
 	public void deletePhoto(ActionEvent e) {
 		if(index>=0) {
 			list.remove(list.get(index));
-			
+			index--;
+			Image image = new Image(list.get(index).getUrl());
+			img.setImage(image);
 		}
 		if(index>0) {
 			index--;
 			Image image = new Image(list.get(index).getUrl());
 			img.setImage(image);
 		}
+	}
+	
+	@FXML
+	public void addTag(ActionEvent e) {
+		Photo photo = list.get(index);
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Add Tag");
+		dialog.setHeaderText("Type of Tag: ");
+		dialog.showAndWait();
+		String type = dialog.getEditor().getText();
+		type = type.toUpperCase();
+		dialog.setTitle("Add Tag");
+		dialog.setHeaderText("Tag Content: ");
+		dialog.showAndWait();
+		String data = dialog.getEditor().getText();
+		photo.addTag(type, data);
+		tagList.setItems(photo.getTags());
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package resources;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import java.io.Serializable;
 import java.util.Date;
@@ -28,15 +30,17 @@ public class Photo implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public TagType getTags() {
-		return tags;
-	}
 	public void setTags(TagType tags) {
 		this.tags = tags;
 	}
 	
 	public void addTag(String type, String data) {
-		TagType ptr = tags;
+		TagType ptr;
+		if (tags == null) {
+			ptr = new TagType(null, null, null);
+		} else {
+			ptr = tags;
+		}
 		
 		while(ptr.next!=null) {
 			if (ptr.getType().equals(type)) {
@@ -120,6 +124,28 @@ public class Photo implements Serializable {
 	}
 	public void setCaption(String caption) {
 		this.caption = caption;
+	}
+	public ObservableList<Tag> getTags(){
+		ObservableList<Tag> l = FXCollections.observableArrayList();
+		
+		TagType ptr;
+		if (tags == null) {
+			ptr = new TagType(null, null, null);
+		} else {
+			ptr = tags;
+		}
+		
+		Tag t;
+		
+		while (ptr.next!=null) {
+			t = ptr.getData();
+			while (t.next!=null) {
+				l.add(t);
+				t=t.next;
+			}
+			ptr=ptr.next;
+		}
+		return l;
 	}
 	
 

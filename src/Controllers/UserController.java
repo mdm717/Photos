@@ -75,13 +75,13 @@ public class UserController extends Application {
 			
 			data.clear();
 			
-			/*for (int i = 0; i < fileList.length; i++) {
+			for (int i = 0; i < fileList.length; i++) {
 				int j;
 				for (j = fileList[i].toString().length()-1; fileList[i].toString().charAt(j) != '/'; j--);
 				String newFile = fileList[i].toString().substring(j+1+LoginHandler.name.length()+1, fileList[i].toString().length()-4);
 				System.out.println(newFile);
 				data.add(new Album(newFile));
-			}*/
+			}
 			
 			listView = (ListView<Album>) scene.lookup("#list");
 			listView.setItems(data);

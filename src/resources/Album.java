@@ -3,6 +3,8 @@ package resources;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import resources.PhotoNode;
 
 /**
@@ -14,7 +16,7 @@ import resources.PhotoNode;
 public class Album implements Serializable{
 	
 	private String albumName;
-	public ArrayList<Photo> list;
+	public ObservableList<Photo> list = FXCollections.observableArrayList();
 	
 	public Album() {}
 	
