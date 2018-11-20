@@ -1,5 +1,6 @@
 package resources;
 
+import javafx.scene.image.Image;
 import java.io.Serializable;
 import java.util.Date;
 

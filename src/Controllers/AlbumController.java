@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import resources.User;
 import javafx.scene.Parent;
@@ -57,9 +60,11 @@ public class AlbumController extends Application implements Serializable{
 	private static Stage mainStage;
 	private static Scene scene;
 	private static ImageView img;
-	private static int index = 0;
+	private static int index = -1;
 	
-	private ArrayList<Photo> list;
+	private ArrayList<Photo> list = new ArrayList<Photo>();
+	
+	private Desktop desktop = Desktop.getDesktop();
 
 	public static final String storeDir = "src/albums";
 	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
@@ -89,7 +94,7 @@ public class AlbumController extends Application implements Serializable{
 			e1.printStackTrace();
 		}
 		
-		try {
+		/*try {
 			readApp();
 		
 			System.out.println(list.get(index).getUrl()+'\n'+list.get(index+1).getUrl());
@@ -98,7 +103,7 @@ public class AlbumController extends Application implements Serializable{
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		
@@ -108,18 +113,50 @@ public class AlbumController extends Application implements Serializable{
 	}
 	
 	@FXML
-	public void prev(ActionEvent e) {
-		if (index>0) {
-			index--;
-			img= new ImageView(list.get(index).getUrl());
-		}
+	public void prev(ActionEvent e) throws MalformedURLException {
+			if (index>0) {
+				index--;
+				File file = new File(list.get(index).getUrl());
+				Image image = new Image(file.toURI().toString());
+				img.setImage(image);
+			}
 	}
 	
 	@FXML
 	public void next(ActionEvent e) {
 		if (index<list.size()) {
 			index++;
-			img= new ImageView(list.get(index).getUrl());
+			File file = new File(list.get(index).getUrl());
+			Image image = new Image(file.toURI().toString());
+			img.setImage(image);
+		}
+	}
+	
+	@FXML
+	public void addPhoto(ActionEvent e) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select a photo");
+		File path = fileChooser.showOpenDialog(mainStage);
+		if(path != null) {
+			index++;
+			Photo picture = new Photo(path.toString());
+			list.add(picture);
+			Image image = new Image(path.toURI().toString());
+			img.setImage(image);
+			
+		}
+	}
+	
+	@FXML
+	public void deletePhoto(ActionEvent e) {
+		if(index>=0) {
+			list.remove(list.get(index));
+			
+		}
+		if(index>0) {
+			index--;
+			Image image = new Image(list.get(index).getUrl());
+			img.setImage(image);
 		}
 	}
 	
