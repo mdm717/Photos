@@ -67,7 +67,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	private static Stage mainStage;
 	private static Scene scene;
-	private static ListView<ImageView> lv;
+	public static ListView<ImageView> lv;
 	
 	private static ObservableList<ImageView> il = FXCollections.observableArrayList();
 	
@@ -77,8 +77,10 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	private Desktop desktop = Desktop.getDesktop();
 
-	public static final String storeDir = "src/albums";
-	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
+	public static String storeDir = "src/albums";
+	public static String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
+	
+	private static Photo copy;
 	
 	public int row = 0;
 	public int col = 0;
@@ -90,12 +92,18 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	public static Album album = new Album();
 	public void start(Stage primaryStage) {
+		il.clear();
+		list.clear();
+		album.list.clear();
 		primaryStage.setTitle("Photo Library");
 		primaryStage.setResizable(false);
 		
 		primaryStage.setOnCloseRequest(e -> {
 			try {
 				writeApp(this);
+				il.clear();
+				list.clear();
+				album.list.clear();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Write Failed");
@@ -109,6 +117,9 @@ public class AlbumControllerReal extends Application implements Serializable{
 			Parent root= FXMLLoader.load(getClass().getResource("AlbumView.fxml"));
 			scene = new Scene(root);
 			lv = (ListView<ImageView>) scene.lookup("#listView");
+			Button bu = (Button) scene.lookup("#paste");
+			if (copy == null)
+				bu.setVisible(false);
 			lv.setItems(il);
 			
 			
@@ -128,8 +139,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 					Photo picture = new Photo(path.toString());
 					
 					//list.add(picture);
-					Image im = new Image(path.toURI().toString(), 100, 100, false, false);	
-					album.list.add(picture);
+					Image im = new Image(path.toURI().toString(), 100, 100, false, false);
 					il.add(new ImageView(im));
 				}
 			}
@@ -189,6 +199,48 @@ public class AlbumControllerReal extends Application implements Serializable{
 		}
         (new UserController()).start(mainStage);
 	}
+
+	@FXML
+	public void copy(ActionEvent e) {
+		int i = lv.getSelectionModel().getSelectedIndex();
+		copy = album.list.get(i);
+		System.out.println("Copy");
+		Button bu = (Button) scene.lookup("#paste");
+		bu.setVisible(true);
+	}
+	
+	@FXML
+	public void move(ActionEvent e) {
+		int i = lv.getSelectionModel().getSelectedIndex();
+		copy = album.list.get(i);
+		
+		int index = lv.getSelectionModel().getSelectedIndex();
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirm Move");
+		alert.setHeaderText("Are You Sure You Wish to Move This Image?\nMoving An Item Without Pasting Can Result In A Loss of Data\nOk Will Remove The Image And Allow You To Paste\nCancel Will Allow You To Paste Without Removing The Image From Its Original Album");
+		Optional<ButtonType> con = alert.showAndWait();
+		
+		
+		if(con.get() == ButtonType.OK) {
+			album.list.remove(index);
+			il.remove(index);
+		}
+		
+		System.out.println("Move");
+		Button bu = (Button) scene.lookup("#paste");
+		bu.setVisible(true);
+	}
+	
+	@FXML
+	public void paste(ActionEvent e) {
+		storeDir = "src/albums";
+		storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
+		
+		album.list.add(copy);
+		Image image = new Image((new File(copy.getUrl())).toURI().toString(), 100, 100, false, false);
+		il.add(new ImageView(image));
+		System.out.println("Paste");
+	}
 	
 	@FXML
 	public void delete(ActionEvent e) {
@@ -214,11 +266,14 @@ public class AlbumControllerReal extends Application implements Serializable{
 	 */
 	
 	public static void writeApp(AlbumControllerReal acr) throws IOException {
-			ObjectOutputStream oos = new ObjectOutputStream(
-			new FileOutputStream(storeDir + File.separator + storeFile));
-			oos.writeObject(album);
-			//System.out.println(acr.pl.toArray(new Photo[0]).toString());
-			System.out.println("Write Successful");
+
+		storeDir = "src/albums";
+		storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
+		ObjectOutputStream oos = new ObjectOutputStream(
+		new FileOutputStream(storeDir + File.separator + storeFile));
+		oos.writeObject(album);
+		//System.out.println(acr.pl.toArray(new Photo[0]).toString());
+		System.out.println("Write Successful");
 	}
 	
 	/**
@@ -228,13 +283,19 @@ public class AlbumControllerReal extends Application implements Serializable{
 	 */
 	
 	public static void readApp() throws IOException, ClassNotFoundException {
-		/*ObjectInputStream ois = new ObjectInputStream(
+
+		storeDir = "src/albums";
+		storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
+		
+		ObjectInputStream ois = new ObjectInputStream(
 		new FileInputStream(storeDir + File.separator + storeFile));
-		AlbumControllerReal acr = (AlbumControllerReal) ois.readObject();
-		album = acr.album;
-		list.clear();
-		list.addAll(acr.list);
-		pl.setAll(acr.pl);*/
+		Album acr = (Album) ois.readObject();
+		album.list = acr.list;
+		for (int i = 0; i < album.list.size(); i++) {System.out.println(album.list.get(i).getUrl());
+			
+//			Image image = new Image((new File(album.list.get(i).getUrl())).toURI().toString(), 100, 100, false, false);	
+//			il.add(new ImageView(image));
+		}
 //		System.out.println(album.toString());
 	} 
 	

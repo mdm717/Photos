@@ -8,9 +8,9 @@
    <children>
       <Button id="add" layoutX="46.0" layoutY="473.0" mnemonicParsing="false" onAction="#add" text="Add Photo" />
       <Button id="delete" layoutX="143.0" layoutY="473.0" mnemonicParsing="false" onAction="#delete" text="Delete Photo" />
-      <Button id="copy" layoutX="461.0" layoutY="473.0" mnemonicParsing="false" text="Copy" />
-      <Button id="move" layoutX="514.0" layoutY="473.0" mnemonicParsing="false" text="Move" />
-      <Button id="paste" layoutX="575.0" layoutY="473.0" mnemonicParsing="false" text="Paste" />
+      <Button id="copy" layoutX="461.0" layoutY="473.0" mnemonicParsing="false" onAction="#copy" text="Copy" />
+      <Button id="move" layoutX="514.0" layoutY="473.0" mnemonicParsing="false" onAction="#move" text="Move" />
+      <Button id="paste" fx:id="paste" layoutX="575.0" layoutY="473.0" mnemonicParsing="false" onAction="#paste" text="Paste" />
       <ListView id="listView" fx:id="listView" layoutX="255.0" layoutY="178.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="14.0" />
       <Button id="back" fx:id="back" layoutX="289.0" layoutY="473.0" mnemonicParsing="false" onAction="#back" text="Back" />
       <Button id="open" fx:id="open" layoutX="355.0" layoutY="473.0" mnemonicParsing="false" onAction="#open" text="Open" />
