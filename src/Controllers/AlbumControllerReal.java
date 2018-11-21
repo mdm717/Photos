@@ -69,7 +69,6 @@ public class AlbumControllerReal extends Application implements Serializable{
 	private static Scene scene;
 	private static ListView<ImageView> lv;
 	
-	private static ObservableList<Photo> pl = FXCollections.observableArrayList();
 	private static ObservableList<ImageView> il = FXCollections.observableArrayList();
 	
 	private static int index = -1;
@@ -125,11 +124,10 @@ public class AlbumControllerReal extends Application implements Serializable{
 			for (int i = 0; i < album.list.size(); i++) {
 				File path = new File(album.list.get(i).getUrl());
 				if(path != null) {
-					//Image im = new Image(path.toURI().toString(), 100, 100, false, false);	
 					Photo picture = new Photo(path.toString());
-					list.add(picture);
+					//list.add(picture);
 					Image im = new Image(path.toURI().toString(), 100, 100, false, false);	
-					pl.add(picture);
+					album.list.add(picture);
 					il.add(new ImageView(im));
 				}
 			}
@@ -154,10 +152,10 @@ public class AlbumControllerReal extends Application implements Serializable{
 			if(path != null) {
 				index++;
 				Photo picture = new Photo(path.toString());
-				list.add(picture);
+				//list.add(picture);
 				Image image = new Image(path.toURI().toString(), 100, 100, false, false);	
 				il.add(new ImageView(image));
-				pl.add(picture);
+				album.list.add(picture);
 			}
 		}
 		else if (row < 4){
@@ -201,7 +199,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 		
 		
 		if(con.get() == ButtonType.OK) {
-			pl.remove(index);
+			album.list.remove(index);
 			il.remove(index);
 		}
 		
@@ -216,7 +214,8 @@ public class AlbumControllerReal extends Application implements Serializable{
 	public static void writeApp(AlbumControllerReal acr) throws IOException {
 			ObjectOutputStream oos = new ObjectOutputStream(
 			new FileOutputStream(storeDir + File.separator + storeFile));
-			oos.writeObject(acr.pl.toArray(new Photo[0]));
+			oos.writeObject(album);
+			//System.out.println(acr.pl.toArray(new Photo[0]).toString());
 			System.out.println("Write Successful");
 	}
 	
@@ -233,7 +232,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 		album = acr.album;
 		list.clear();
 		list.addAll(acr.list);
-		ol.setAll(acr.ol);*/
+		pl.setAll(acr.pl);*/
 //		System.out.println(album.toString());
 	} 
 	

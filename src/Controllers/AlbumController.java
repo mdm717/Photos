@@ -71,6 +71,7 @@ public class AlbumController extends Application implements Serializable{
 	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
 	
 	public static Album album;
+	//public static Photo photo;
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");
 		primaryStage.setResizable(false);
