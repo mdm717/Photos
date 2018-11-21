@@ -14,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.sun.glass.events.WindowEvent;
@@ -36,6 +38,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -75,6 +78,11 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	public int row = 0;
 	public int col = 0;
+	
+	public int tempRow = 0;
+	public int tempCol = 0;
+	
+	public int listDex = 0;
 	
 	public static Album album;
 	public void start(Stage primaryStage) {
@@ -122,33 +130,85 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	@FXML
 	public void add(ActionEvent e) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Select a photo");
-		File path = fileChooser.showOpenDialog(mainStage);
-		if(path != null) {
-			index++;
-			Photo picture = new Photo(path.toString());
-			list.add(picture);
-			Image image = new Image(path.toURI().toString(), 100, 100, false, false);	
-			if(col == 6) {
-				col = 0;
-				row+=1;
+		if(row < 4) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Select a photo");
+			File path = fileChooser.showOpenDialog(mainStage);
+			if(path != null) {
+				index++;
+				Photo picture = new Photo(path.toString());
+				list.add(picture);
+				Image image = new Image(path.toURI().toString(), 100, 100, false, false);	
+				if(col == 6) {
+					col = 0;
+					row+=1;
+				}
+				gp.add(new ImageView(image), col, row);
+				col++;
 			}
-			gp.add(new ImageView(image), col, row);
-			col++;
+		}
+		else if (row < 4){
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Album Full");
+			alert.setHeaderText("Album is full.  Please delete photos before adding more.");
+			alert.showAndWait();
 		}
 	}
 	
 	@FXML
 	public void delete(ActionEvent e) {
-		if(index>=0) {
-			list.remove(list.get(index));
+		//List<String> choices = new ArrayList<>();
+		String[] arrayData = {"col: 1, row: 1", "col: 2, row: 1", "col: 3, row: 1", "col: 4, row: 1", "col: 5, row: 1", "col: 6, row: 1",
+								"col: 1, row: 2", "col: 2, row: 2", "col: 3, row: 2", "col: 4, row: 2", "col: 5, row: 2", "col: 6, row: 2",
+								"col: 1, row: 3", "col: 2, row: 3", "col: 3, row: 3", "col: 4, row: 3", "col: 5, row: 3", "col: 6, row: 3",
+								"col: 1, row: 4", "col: 2, row: 4", "col: 3, row: 4", "col: 4, row: 4", "col: 5, row: 4", "col: 6, row: 4"};
+		
+		List<String> dialogData = Arrays.asList(arrayData);
+		
+		ChoiceDialog<String> dialog = new ChoiceDialog(dialogData.get(0), dialogData);
+		dialog.setHeaderText("Delete an Image");
+		dialog.setContentText("Select an Image to Delete: ");
+		
+		Optional<String> result = dialog.showAndWait();
+		
+		if(result.isPresent()) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirm Delete");
+			alert.setHeaderText("Are You Sure You Wish to Delete This Album? All Pictures in the Album will be Lost.");
+			Optional<ButtonType> con = alert.showAndWait();
+			
+			
+			if(con.get() == ButtonType.OK) {
+				if(result.get() == "col: 1, row: 1") { col=0; row=0; listDex = 0; }
+				else if(result.get() == "col: 2, row: 1") { col=1; row=0; listDex = 1;}
+				else if(result.get() == "col: 3, row: 1") { col=2; row=0; listDex = 2;}
+				else if(result.get() == "col: 4, row: 1") { col=3; row=0; listDex = 3;}
+				else if(result.get() == "col: 5, row: 1") { col=4; row=0; listDex = 4;}
+				else if(result.get() == "col: 6, row: 1") { col=5; row=0; listDex = 5;}
+				else if(result.get() == "col: 1, row: 2") { col=0; row=1; listDex = 6;}
+				else if(result.get() == "col: 2, row: 2") { col=1; row=1; listDex = 7;}
+				else if(result.get() == "col: 3, row: 2") { col=2; row=1; listDex = 8;}
+				else if(result.get() == "col: 4, row: 2") { col=3; row=1; listDex = 9;}
+				else if(result.get() == "col: 5, row: 2") { col=4; row=1; listDex = 10;}
+				else if(result.get() == "col: 6, row: 2") { col=5; row=1; listDex = 11;}
+				else if(result.get() == "col: 1, row: 3") { col=0; row=2; listDex = 12;}
+				else if(result.get() == "col: 2, row: 3") { col=1; row=2; listDex = 13;}
+				else if(result.get() == "col: 3, row: 3") { col=2; row=2; listDex = 14;}
+				else if(result.get() == "col: 4, row: 3") { col=3; row=2; listDex = 15;}
+				else if(result.get() == "col: 5, row: 3") { col=4; row=2; listDex = 16;}
+				else if(result.get() == "col: 6, row: 3") { col=5; row=2; listDex = 17;}
+				else if(result.get() == "col: 1, row: 4") { col=0; row=3; listDex = 18;}
+				else if(result.get() == "col: 2, row: 4") { col=1; row=3; listDex = 19;}
+				else if(result.get() == "col: 3, row: 4") { col=2; row=3; listDex = 20;}
+				else if(result.get() == "col: 4, row: 4") { col=3; row=3; listDex = 21;}
+				else if(result.get() == "col: 5, row: 4") { col=4; row=3; listDex = 22;}
+				else if(result.get() == "col: 6, row: 4") { col=5; row=3; listDex = 23;}
+				
+				list.set(listDex, null);
+				
+			}
 		}
-		if(index>0) {
-			index--;
-			Image image = new Image(list.get(index).getUrl());
-			//img.setImage(image);
-		}
+		
 	}
 	
 	/**
