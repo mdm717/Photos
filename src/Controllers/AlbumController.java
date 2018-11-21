@@ -71,6 +71,7 @@ public class AlbumController extends Application implements Serializable{
 	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
 	
 	public static Album album;
+	
 	//public static Photo photo;
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");
@@ -80,6 +81,10 @@ public class AlbumController extends Application implements Serializable{
 			scene = new Scene(root);
 			img = (ImageView) scene.lookup("#imgView");
 			tagList = (ListView) scene.lookup("#tagView");
+			File imageFile = new File(AlbumControllerReal.album.list.get(0).getUrl());
+			Image image = new Image(imageFile.toURI().toString());
+			img.setImage(image);
+			//System.out.println(AlbumControllerReal.album.list.get(0).getUrl());
 			primaryStage.setOnCloseRequest(e -> {
 				try {
 					album.list.clear();
@@ -143,6 +148,24 @@ public class AlbumController extends Application implements Serializable{
 	}
 	
 	@FXML
+	public void back(ActionEvent e) {
+		(new AlbumControllerReal()).start(mainStage);
+	}
+	
+	
+	@FXML
+	public void caption(ActionEvent e) {
+		/*TextInputDialog dialog = new TextInputDialog();		
+		dialog.setTitle("Write Caption");
+		dialog.setHeaderText("What Would you like to Caption this Photo?");
+		dialog.showAndWait();
+		
+		String caption = dialog.getEditor().getText().toString();
+		list.get(index).setCaption(caption);*/
+		
+	}
+	
+	@FXML
 	public void addPhoto(ActionEvent e) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select a photo");
@@ -174,7 +197,8 @@ public class AlbumController extends Application implements Serializable{
 	
 	@FXML
 	public void addTag(ActionEvent e) {
-		Photo photo = list.get(index);
+		//Photo photo = album.list.get(index);
+		
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Add Tag");
 		dialog.setHeaderText("Type of Tag: ");
@@ -185,8 +209,8 @@ public class AlbumController extends Application implements Serializable{
 		dialog.setHeaderText("Tag Content: ");
 		dialog.showAndWait();
 		String data = dialog.getEditor().getText();
-		photo.addTag(type, data);
-		tagList.setItems(photo.getTags());
+		//photo.addTag(type, data);
+		//tagList.setItems(photo.getTags());
 	}
 	
 	/**
