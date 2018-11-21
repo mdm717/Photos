@@ -120,11 +120,13 @@ public class AlbumControllerReal extends Application implements Serializable{
 		
 		try {
 			readApp();
+			int size = album.list.size();
 	//		System.out.println(album.toString());
-			for (int i = 0; i < album.list.size(); i++) {
+			for (int i = 0; i < size; i++) {
 				File path = new File(album.list.get(i).getUrl());
 				if(path != null) {
 					Photo picture = new Photo(path.toString());
+					
 					//list.add(picture);
 					Image im = new Image(path.toURI().toString(), 100, 100, false, false);	
 					album.list.add(picture);
