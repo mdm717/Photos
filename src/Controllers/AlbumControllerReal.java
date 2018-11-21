@@ -44,8 +44,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.fxml.FXML;
@@ -71,6 +73,9 @@ public class AlbumControllerReal extends Application implements Serializable{
 	public static final String storeDir = "src/albums";
 	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
 	
+	public int row = 0;
+	public int col = 0;
+	
 	public static Album album;
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");
@@ -79,6 +84,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 			Parent root= FXMLLoader.load(getClass().getResource("AlbumView.fxml"));
 			scene = new Scene(root);
 			gp = (GridPane) scene.lookup("#gpView");
+			
 			primaryStage.setOnCloseRequest(e -> {
 				try {
 					writeApp(album);
@@ -123,9 +129,13 @@ public class AlbumControllerReal extends Application implements Serializable{
 			index++;
 			Photo picture = new Photo(path.toString());
 			list.add(picture);
-			Image image = new Image(path.toURI().toString(), 100, 100, false, false);			
-		
-			gp.getChildren().add(new ImageView(image));
+			Image image = new Image(path.toURI().toString(), 100, 100, false, false);	
+			if(col == 6) {
+				col = 0;
+				row+=1;
+			}
+			gp.add(new ImageView(image), col, row);
+			col++;
 		}
 	}
 	

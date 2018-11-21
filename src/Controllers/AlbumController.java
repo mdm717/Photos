@@ -151,7 +151,7 @@ public class AlbumController extends Application implements Serializable{
 			Image image = new Image(path.toURI().toString());
 			index = list.size()-1;
 			img.setImage(image);
-			
+		
 		}
 	}
 	

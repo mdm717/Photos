@@ -51,7 +51,6 @@ public class UserController extends Application {
 	private static TextField name;
 	private static String file = "src/albums";
 	private static String ext = ".dat";
-	private static String separator = "/";
 
 	private static int count; //counts items in list
 	private static int action = -1;
@@ -77,7 +76,8 @@ public class UserController extends Application {
 			
 			for (int i = 0; i < fileList.length; i++) {
 				int j;
-				for (j = fileList[i].toString().length()-1; fileList[i].toString().charAt(j) != '/'; j--);
+				System.out.println(fileList[i].toString());
+				for (j = fileList[i].toString().length()-1; fileList[i].toString().charAt(j) != File.separatorChar; j--);
 				String newFile = fileList[i].toString().substring(j+1+LoginHandler.name.length()+1, fileList[i].toString().length()-4);
 				System.out.println(newFile);
 				data.add(new Album(newFile));
@@ -130,14 +130,14 @@ public class UserController extends Application {
 			if(!exists) {
 
 				try {
-					if (name.contains("/")) {
+					if (name.contains("/") || name.contains("\\")) {
 						Alert error = new Alert(AlertType.INFORMATION);
 						error.setTitle("Creation Error");
 						error.setHeaderText(null);
-						error.setContentText("Contains Illegal Character. Please Do Not Use '/' In The Album Name.");
+						error.setContentText("Contains Illegal Character. Please Do Not Use '/' or '\' In The Album Name.");
 						error.showAndWait();
 					} else {
-						(new File(file + separator + LoginHandler.name + "_" + name + ext)).createNewFile();
+						(new File(file + File.separator + LoginHandler.name + "_" + name + ext)).createNewFile();
 						data.add(new Album(name));
 						index++;
 					}
@@ -162,7 +162,7 @@ public class UserController extends Application {
 		Optional<ButtonType> result = alert.showAndWait();
 		if(result.get() == ButtonType.OK) {
 			String albumName = listView.getSelectionModel().getSelectedItem().toString();
-			File delFile = new File (file + separator + LoginHandler.name + "_" + albumName + ext);
+			File delFile = new File (file + File.separator + LoginHandler.name + "_" + albumName + ext);
 			delFile.delete();
 			data.remove(listView.getSelectionModel().getSelectedIndex());
 			try {
@@ -176,7 +176,7 @@ public class UserController extends Application {
 		try {
 			//writeApp(this); 
 			albumName = listView.getSelectionModel().getSelectedItem().getAlbumName();
-			(new AlbumController()).start(mainStage);
+			(new AlbumControllerReal()).start(mainStage);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -210,8 +210,8 @@ public class UserController extends Application {
 				}
 				
 				if (newFile) {
-					File of = new File(file + separator + LoginHandler.name + "_" + data.get(index).toString() + ext);
-					File nf = new File(file + separator + LoginHandler.name + "_" + dialog.getEditor().getText() + ext);
+					File of = new File(file + File.separator + LoginHandler.name + "_" + data.get(index).toString() + ext);
+					File nf = new File(file + File.separator + LoginHandler.name + "_" + dialog.getEditor().getText() + ext);
 					
 					of.renameTo(nf);
 					
