@@ -1,12 +1,14 @@
 package resources;
 
+import java.io.Serializable;
+
 /**
  * Tag.java - 
  * @author cms631
  * @author mdm289
  */
 
-public class Tag {
+public class Tag implements Serializable{
 	public Tag next;
 	private String data;
 	

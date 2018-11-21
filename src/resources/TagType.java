@@ -1,12 +1,14 @@
 package resources;
 
+import java.io.Serializable;
+
 /**
  * TagType.java - 
  * @author Craig Sirota cms631
  * @author Matthew Marrazzo mdm289
  */
 
-public class TagType {
+public class TagType  implements Serializable{
 
 	public String type;
 	public Tag data;

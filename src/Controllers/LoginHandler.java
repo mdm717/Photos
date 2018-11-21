@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +25,7 @@ import javafx.scene.control.TextField;
  *
  */
 
-public class LoginHandler {
+public class LoginHandler implements Serializable{
 	public static String name = "";
 	
 	/**

@@ -67,7 +67,7 @@ public class AdminController extends Application implements Serializable {
 		primaryStage.setResizable(false);
 		
 		try {
-			Parent root= FXMLLoader.load(getClass().getResource("/Controllers/AdminSub.fxml"));
+			Parent root= FXMLLoader.load(getClass().getResource(File.separator + "Controllers" + File.separator + "AdminSub.fxml"));
 			scene = new Scene(root);
 			listView = (ListView<User>) scene.lookup("#listView");
 			listView.setItems(data);
@@ -99,7 +99,7 @@ public class AdminController extends Application implements Serializable {
 		        System.exit(0);
 		    });
 			
-			String file = "src/resources/Users.txt";
+//			String file = "src/resources/Users.txt";
 /*
             BufferedReader br = new BufferedReader(new FileReader(file));System.out.println("FFF");
         	String line = br.readLine();
@@ -117,7 +117,7 @@ public class AdminController extends Application implements Serializable {
 			e.printStackTrace();
 		}
 		mainStage= primaryStage;
-/* (data.isEmpty()) {
+		if (data.isEmpty()) {
 			count = 0;
 		} else if (count == 1) {
 		}
@@ -125,7 +125,7 @@ public class AdminController extends Application implements Serializable {
 		handler(action);
 		
 //		listView.getSelectionModel().selectedIndexProperty().addListener( (obs, oldVal, newVal) -> showInfo(newVal));
-*/	}
+	}
 	
 	/**
 	 * This method writes a list of current users out to a file for later use
@@ -253,7 +253,7 @@ public class AdminController extends Application implements Serializable {
 			name.setText(data.get(index).getName());
 			String file = "src/albums";
 			String ext = ".dat";
-			String separator = "/";
+			String separator = File.separator;
 			File[] fileList = new File(file).listFiles(new FilenameFilter() {
 			    public boolean accept(File dir, String name) {
 			        return name.startsWith(username) && name.endsWith(".dat");

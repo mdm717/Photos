@@ -41,7 +41,7 @@ import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
-public class UserController extends Application {
+public class UserController extends Application implements Serializable {
 	public static final ObservableList<Album> data = FXCollections.observableArrayList();
 	private static ListView<Album> listView;
 	

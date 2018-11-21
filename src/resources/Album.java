@@ -16,9 +16,11 @@ import resources.PhotoNode;
 public class Album implements Serializable{
 	
 	private String albumName;
-	public ObservableList<Photo> list = FXCollections.observableArrayList();
+	public ArrayList<Photo> list = new ArrayList<Photo>();
 	
-	public Album() {}
+	public Album() {
+		list.add(new Photo("test"));
+	}
 	
 	/**
 	 * This method sets the album objects equal to the parameter

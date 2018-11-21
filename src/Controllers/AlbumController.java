@@ -67,7 +67,7 @@ public class AlbumController extends Application implements Serializable{
 	
 	private Desktop desktop = Desktop.getDesktop();
 
-	public static final String storeDir = "src/albums";
+	public static final String storeDir = "src" + File.separator + "albums";
 	public static final String storeFile = LoginHandler.name + "_" + UserController.albumName + ".dat";
 	
 	public static Album album;
@@ -81,7 +81,8 @@ public class AlbumController extends Application implements Serializable{
 			tagList = (ListView) scene.lookup("#tagView");
 			primaryStage.setOnCloseRequest(e -> {
 				try {
-					album.list.setAll(list);
+					album.list.clear();
+					album.list.addAll(list);
 					writeApp(album);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -101,7 +102,7 @@ public class AlbumController extends Application implements Serializable{
 			readApp();
 			if (index > -1)
 				img= new ImageView(list.get(index).getUrl());
-			
+				
 		} catch (ClassNotFoundException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();

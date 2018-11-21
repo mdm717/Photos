@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.io.Serializable;
+
 import javafx.application.Application;
 
 /**
@@ -9,7 +11,7 @@ import javafx.application.Application;
  *
  */
 
-public class PhotosLib {
+public class PhotosLib  implements Serializable{
 
 	/**
 	 * This method initially launches the application
