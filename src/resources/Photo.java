@@ -3,6 +3,8 @@ package resources;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,12 +19,18 @@ public class Photo implements Serializable {
 	private TagType tags; // 2D linked list, first linked list is type of tag, tags.next => the next type, tags.data => linked list of tags
 	private String url;
 	private String caption;
+	private Image image;
 	
+	
+	public Photo(Image image, String url) { 
+		//image = new Image(path.toURI().toString(), 100, 100, false, false);
+		this.url = url;
+		this.image = image;
+	}
 	public Photo(String url) {this.url=url;}
 	public Photo(String url, Date date) {this.url=url;this.date=date;}
 	public Photo(String url, String caption) {this.url=url;this.caption=caption;}
 	public Photo(String url, String caption, Date date) {this.url=url;this.date=date;this.caption=caption;}
-	
 	
 	public Date getDate() {
 		return date;
@@ -111,6 +119,10 @@ public class Photo implements Serializable {
 			ptr=ptr.next;
 		}
 		return null;
+	}
+	
+	public Image getImage() {
+		return image;
 	}
 	
 	public String getUrl() {

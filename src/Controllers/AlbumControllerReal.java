@@ -67,8 +67,8 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	private static Stage mainStage;
 	private static Scene scene;
-	private static ListView<ImageView> lv;
-	private static ObservableList<ImageView> ol = FXCollections.observableArrayList();
+	private static ListView<Photo> lv;
+	private static ObservableList<Photo> ol = FXCollections.observableArrayList();
 	private static int index = -1;
 	
 	private static ArrayList<Photo> list = new ArrayList<Photo>();
@@ -106,7 +106,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 		try {
 			Parent root= FXMLLoader.load(getClass().getResource("AlbumView.fxml"));
 			scene = new Scene(root);
-			lv = (ListView<ImageView>) scene.lookup("#listView");
+			lv = (ListView<Photo>) scene.lookup("#listView");
 			lv.setItems(ol);
 			
 			
@@ -122,10 +122,11 @@ public class AlbumControllerReal extends Application implements Serializable{
 			for (int i = 0; i < album.list.size(); i++) {
 				File path = new File(album.list.get(i).getUrl());
 				if(path != null) {
-					Photo picture = new Photo(path.toString());
-					list.add(picture);
 					Image im = new Image(path.toURI().toString(), 100, 100, false, false);	
-					ol.add(new ImageView(im));
+					Photo picture = new Photo(im, path.toString());
+					list.add(picture);
+					//Image im = new Image(path.toURI().toString(), 100, 100, false, false);	
+					ol.add(picture);
 				}
 			}
 		} catch (ClassNotFoundException | IOException e) {
@@ -151,7 +152,8 @@ public class AlbumControllerReal extends Application implements Serializable{
 				Photo picture = new Photo(path.toString());
 				list.add(picture);
 				Image image = new Image(path.toURI().toString(), 100, 100, false, false);	
-				ol.add(new ImageView(image));
+				//ol.add(new ImageView(image));
+				ol.add(picture);
 			}
 		}
 		else if (row < 4){
@@ -209,7 +211,7 @@ public class AlbumControllerReal extends Application implements Serializable{
 	public static void writeApp(AlbumControllerReal acr) throws IOException {
 			ObjectOutputStream oos = new ObjectOutputStream(
 			new FileOutputStream(storeDir + File.separator + storeFile));
-			oos.writeObject(acr);
+			oos.writeObject(acr.ol.toArray(new Photo[0]));
 			System.out.println("Write Successful");
 	}
 	
@@ -220,13 +222,13 @@ public class AlbumControllerReal extends Application implements Serializable{
 	 */
 	
 	public static void readApp() throws IOException, ClassNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(
+		/*ObjectInputStream ois = new ObjectInputStream(
 		new FileInputStream(storeDir + File.separator + storeFile));
 		AlbumControllerReal acr = (AlbumControllerReal) ois.readObject();
 		album = acr.album;
 		list.clear();
 		list.addAll(acr.list);
-		ol.setAll(acr.ol);
+		ol.setAll(acr.ol);*/
 //		System.out.println(album.toString());
 	} 
 	
