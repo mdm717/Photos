@@ -82,13 +82,6 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	private static Photo copy;
 	
-	public int row = 0;
-	public int col = 0;
-	
-	public int tempRow = 0;
-	public int tempCol = 0;
-	
-	public int listDex = 0;
 	
 	public static Album album = new Album();
 	public void start(Stage primaryStage) {
@@ -157,7 +150,6 @@ public class AlbumControllerReal extends Application implements Serializable{
 	
 	@FXML
 	public void add(ActionEvent e) {
-		if(row < 4) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Select a photo");
 			File path = fileChooser.showOpenDialog(mainStage);
@@ -169,13 +161,6 @@ public class AlbumControllerReal extends Application implements Serializable{
 				il.add(new ImageView(image));
 				album.list.add(picture);
 			}
-		}
-		else if (row < 4){
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Album Full");
-			alert.setHeaderText("Album is full.  Please delete photos before adding more.");
-			alert.showAndWait();
-		}
 	}
 
 	@FXML

@@ -68,8 +68,8 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Button mnemonicParsing="false" onAction="#addPhoto" text="Add Photo" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#deletePhoto" text="Delete Photo" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+           <!-- <Button mnemonicParsing="false" onAction="#addPhoto" text="Add Photo" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" /> -->
+           <!-- <Button mnemonicParsing="false" onAction="#deletePhoto" text="Delete Photo" GridPane.halignment="CENTER" GridPane.rowIndex="1" /> -->
             <Button mnemonicParsing="false" onAction="#back" text="Back" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" onAction="#caption" text="Add Caption" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
