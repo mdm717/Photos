@@ -63,6 +63,7 @@ public class AlbumController extends Application implements Serializable{
 	private static ImageView img;
 	private static ListView tagList;
 	public static int index = -1;
+	private ObservableList<Tag> tList = FXCollections.observableArrayList();
 	private ObservableList<Photo> list = FXCollections.observableArrayList();
 	
 	private Desktop desktop = Desktop.getDesktop();
@@ -87,6 +88,7 @@ public class AlbumController extends Application implements Serializable{
 			tagList = (ListView) scene.lookup("#tagView");
 			
 			index = AlbumControllerReal.lv.getSelectionModel().getSelectedIndex();
+			tagList.setItems(tList);
 			File imageFile = new File(AlbumControllerReal.album.list.get(index).getUrl());
 			Image image = new Image(imageFile.toURI().toString());
 			img.setImage(image);
@@ -144,7 +146,10 @@ public class AlbumController extends Application implements Serializable{
 				File file = new File(AlbumControllerReal.album.list.get(index).getUrl());
 				Image image = new Image(file.toURI().toString());
 				img.setImage(image);
-				tagList.setItems(AlbumControllerReal.album.list.get(index).getTags());
+				tList.clear();
+				tList.addAll(AlbumControllerReal.album.list.get(index).tags);
+				((Text) scene.lookup("#caption")).setText(album.list.get(index).getCaption());
+				((Text) scene.lookup("#date")).setText("Date: "+album.list.get(index).getDate().toString());
 				
 			}
 	}
@@ -160,7 +165,10 @@ public class AlbumController extends Application implements Serializable{
 			File file = new File(AlbumControllerReal.album.list.get(index).getUrl());
 			Image image = new Image(file.toURI().toString());
 			img.setImage(image);;
-			tagList.setItems(AlbumControllerReal.album.list.get(index).getTags());
+			tList.clear();
+			tList.addAll(AlbumControllerReal.album.list.get(index).tags);
+			((Text) scene.lookup("#caption")).setText(album.list.get(index).getCaption());
+			((Text) scene.lookup("#date")).setText("Date: "+album.list.get(index).getDate().toString());
 		}
 	}
 	
@@ -181,13 +189,14 @@ public class AlbumController extends Application implements Serializable{
 	
 	@FXML
 	public void caption(ActionEvent e) {
-		/*TextInputDialog dialog = new TextInputDialog();		
+		TextInputDialog dialog = new TextInputDialog();		
 		dialog.setTitle("Write Caption");
 		dialog.setHeaderText("What Would you like to Caption this Photo?");
 		dialog.showAndWait();
 		
 		String caption = dialog.getEditor().getText().toString();
-		list.get(index).setCaption(caption);*/
+		album.list.get(index).setCaption(caption);
+		((Text) scene.lookup("#caption")).setText(caption);
 		
 	}
 	
@@ -241,12 +250,31 @@ public class AlbumController extends Application implements Serializable{
 		dialog.showAndWait();
 		String type = dialog.getEditor().getText();
 		type = type.toUpperCase();
-		dialog.setTitle("Add Tag");
-		dialog.setHeaderText("Tag Content: ");
-		dialog.showAndWait();
-		String data = dialog.getEditor().getText();
+		TextInputDialog dialog2 = new TextInputDialog();
+		dialog2.setTitle("Add Tag");
+		dialog2.setHeaderText("Tag Content: ");
+		dialog2.showAndWait();
+		String data = dialog2.getEditor().getText();
+		System.out.println(index +"\n"+type+"\n"+data);
 		AlbumControllerReal.album.list.get(index).addTag(type, data);
-		tagList.setItems(AlbumControllerReal.album.list.get(index).getTags());
+		tList.clear();
+		tList.addAll(AlbumControllerReal.album.list.get(index).tags);
+		tagList.setItems(tList);
+	}
+	
+
+	/**
+	 * This method allows a user to delete tags to the photo they are viewing
+	 * @param e		a button press
+	 */
+	@FXML
+	public void deleteTag(ActionEvent e) {
+		//Photo photo = album.list.get(index);
+		int i = tagList.getSelectionModel().getSelectedIndex();
+		AlbumControllerReal.album.list.get(index).tags.remove(i);
+		tList.clear();
+		tList.addAll(AlbumControllerReal.album.list.get(index).tags);	
+		tagList.setItems(tList);
 	}
 	
 	/**

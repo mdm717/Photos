@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
 
 public class Photo implements Serializable {
 	private Date date;
-	private TagType tags; // 2D linked list, first linked list is type of tag, tags.next => the next type, tags.data => linked list of tags
+	public ArrayList<Tag> tags = new ArrayList<Tag>();
 	private String url;
 	private String caption;
 	private Image image;
@@ -57,60 +58,13 @@ public class Photo implements Serializable {
 	}
 	
 	/**
-	 * Sets the tags of the photo object
-	 * @param tags		the tags associated with the photo
-	 */
-	public void setTags(TagType tags) {
-		this.tags = tags;
-	}
-	
-	/**
 	 * Adds tags input by the user to the photo object
 	 * @param type		the category of tag
 	 * @param data		the actual tag
 	 */
 	
 	public void addTag(String type, String data) {
-		TagType ptr;
-		if (tags == null) {
-			ptr = new TagType(null, null, null);
-		} else {
-			ptr = tags;
-		}
-		
-		while(ptr.next!=null) {
-			if (ptr.getType().equals(type)) {
-				Tag t = ptr.data;
-				if (t == null) {
-					t = new Tag(data,null);
-					return;
-				}
-				while (t.next!=null) {
-					if (t.getData().compareTo(data)==0) { //Tag already exists
-						return;
-					} else if (t.getData().compareTo(data)<0) {
-						if (t.next!=null) {
-							if (t.next.getData().compareTo(data)>0) {
-								t.next= new Tag(data, t.next);
-								return;
-							}
-						} else {
-							t.next= new Tag(data, null);
-							return;
-						}
-					} else if (t.getData().compareTo(data)>0) {
-						t= new Tag(data, t);
-						return;
-					}
-					t=t.next;
-				}
-				t.next= new Tag(data, null);
-				return;
-			}
-			
-			ptr=ptr.next;
-		}
-		ptr.next=new TagType(type, new Tag(data, null), null);
+		tags.add(new Tag(type, data));
 		return;
 	}
 	
@@ -122,45 +76,27 @@ public class Photo implements Serializable {
 	 */
 	
 	public boolean deleteTag(String type, String data) {
-		TagType ptr = tags;
-		Tag t;
-		
-		while (ptr.next!=null) {
-			t = ptr.getData();
-			while (ptr.getType().equals(type) && t.next!=null) {
-				if (t.next.getData().equals(data)) {
-					t.next = t.next.next;
-					return true;
-				}
-				t=t.next;
+		for (int i = 0; i < tags.size(); i++) {
+			if (tags.get(i).toString().equals(type+"="+data)) {
+				tags.remove(i);
 			}
-			ptr=ptr.next;
 		}
 		return false;
 	}
 	
 	/**
 	 * Searches the tags associated with photo objects
-	 * @param type		the category of the tag
 	 * @param data		the actual tag
-	 * @return	the found tag being searched for
+	 * @return	the true if the tag being searched for is found
 	 */
 
-	public Tag searchTag(String type, String data) {
-		TagType ptr = tags;
-		Tag t;
-		
-		while (ptr.next!=null) {
-			t = ptr.getData();
-			while (ptr.getType().equals(type) && t.next!=null) {
-				if (t.next.getData().equals(data)) {
-					return t.next;
-				}
-				t=t.next;
+	public boolean searchTag(String data) {
+		for (int i = 0; i < tags.size(); i++) {
+			if (tags.get(i).toString().contains(data)) {
+				return true;
 			}
-			ptr=ptr.next;
 		}
-		return null;
+		return false;
 	}
 	
 	/**
@@ -203,33 +139,6 @@ public class Photo implements Serializable {
 	 */
 	public void setCaption(String caption) {
 		this.caption = caption;
-	}
-	
-	/**
-	 * Gets the tags stored in the photo object
-	 * @return l		an ObseravableList of tags associated with the photo object
-	 */
-	public ObservableList<Tag> getTags(){
-		ObservableList<Tag> l = FXCollections.observableArrayList();
-		
-		TagType ptr;
-		if (tags == null) {
-			ptr = new TagType(null, null, null);
-		} else {
-			ptr = tags;
-		}
-		
-		Tag t;
-		
-		while (ptr.next!=null) {
-			t = ptr.getData();
-			while (t.next!=null) {
-				l.add(t);
-				t=t.next;
-			}
-			ptr=ptr.next;
-		}
-		return l;
 	}
 	
 

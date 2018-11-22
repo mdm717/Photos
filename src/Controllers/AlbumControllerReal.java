@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,7 +156,8 @@ public class AlbumControllerReal extends Application implements Serializable{
 			File path = fileChooser.showOpenDialog(mainStage);
 			if(path != null) {
 				index++;
-				Photo picture = new Photo(path.toString());
+				Date d = new Date(path.lastModified());
+				Photo picture = new Photo(path.toString(),d);
 				//list.add(picture);
 				Image image = new Image(path.toURI().toString(), 100, 100, false, false);	
 				il.add(new ImageView(image));

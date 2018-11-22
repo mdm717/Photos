@@ -9,26 +9,27 @@ import java.io.Serializable;
  */
 
 public class Tag implements Serializable{
-	public Tag next;
+	public String type;
 	private String data;
 	
-	public Tag(String data, Tag next) {
-		this.next=next;
+	/**
+	 * 
+	 * @param type	the type of tag
+	 * @param data	the actual tag
+	 */
+	public Tag(String type, String data) {
+		this.type=type;
 		this.data=data;
 	}
 	
 	public Tag() {}
-
-	public String getData() {
-		return data;
-	}
 
 	public void setData(String data) {
 		this.data = data;
 	}
 	
 	public String toString() {
-		return data;
+		return type+"="+data;
 	}
 	
 }
