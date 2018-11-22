@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * LoginView.java - This class loads the 
+ * LoginView.java - This class shows the log in page 
  * @author Craig Sirota cms631
  * @author Matthew Marrazzo mdm289
  */
@@ -38,8 +38,8 @@ public class LoginView extends Application implements Serializable{
 	
 	
 	/**
-	 * 
-	 * @param primaryStage
+	 * This method loads the log in screen
+	 * @param primaryStage		the scene to be loaded
 	 * @throws Exception
 	 */
 	
@@ -87,8 +87,8 @@ public class LoginView extends Application implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * This method converts the textfield input into a string
+	 * @return tf.getText()		string variable of the textfield input
 	 */
 	
 	public static String getText() {
@@ -96,8 +96,8 @@ public class LoginView extends Application implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param str
+	 * This method sets the prompt text to be the value of the passed string
+	 * @param str		a string variable of a prompt
 	 */
 	
 	public static void prompt(String str) {
@@ -106,8 +106,8 @@ public class LoginView extends Application implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @return 
+	 * This method gets the main stage of the scene
+	 * @return mainStage		the main scene to be shown
 	 */
 	
 	public static Stage getMainStage() {

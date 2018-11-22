@@ -72,6 +72,11 @@ public class AlbumController extends Application implements Serializable{
 	
 	public static Album album;
 	
+	/**
+	 * This method loads the details of the selected image in an album
+	 * @param primaryStage		the scene to be loaded
+	 */
+	
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Photo Library");
 		primaryStage.setResizable(false);
@@ -127,8 +132,13 @@ public class AlbumController extends Application implements Serializable{
 		mainStage= primaryStage;
 	}
 	
+	/**
+	 * This method shows the previous image in album list
+	 * @param e		a button press
+	 */
+	
 	@FXML
-	public void prev(ActionEvent e) throws MalformedURLException {
+	public void prev(ActionEvent e) {
 			if (index>0) {
 				index--;
 				File file = new File(AlbumControllerReal.album.list.get(index).getUrl());
@@ -139,6 +149,10 @@ public class AlbumController extends Application implements Serializable{
 			}
 	}
 	
+	/**
+	 * This method shows the next image in an album list
+	 * @param e		a button press
+	 */
 	@FXML
 	public void next(ActionEvent e) {
 		if (index<AlbumControllerReal.album.list.size()-1) {
@@ -150,11 +164,20 @@ public class AlbumController extends Application implements Serializable{
 		}
 	}
 	
+	/**
+	 * This method allows the user to return to the album thumbnail page
+	 * @param e		a button press
+	 */
+	
 	@FXML
 	public void back(ActionEvent e) {
 		(new AlbumControllerReal()).start(mainStage);
 	}
 	
+	/**
+	 * This method allows a user to caption the photo they are viewing
+	 * @param e		a button press
+	 */
 	
 	@FXML
 	public void caption(ActionEvent e) {
@@ -202,6 +225,12 @@ public class AlbumController extends Application implements Serializable{
 		}
 	}
 	*/
+	
+	/**
+	 * This method allows a user to add tags to the photo they are viewing
+	 * @param e		a button press
+	 */
+	
 	@FXML
 	public void addTag(ActionEvent e) {
 		//Photo photo = album.list.get(index);

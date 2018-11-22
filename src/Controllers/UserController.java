@@ -41,6 +41,13 @@ import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+/**
+ * UserController.java - This class controls the user home page
+ * @author Craig Sirota cms631
+ * @author Matthew Marrazzo mdm289
+ */
+
+
 public class UserController extends Application implements Serializable {
 	public static final ObservableList<Album> data = FXCollections.observableArrayList();
 	private static ListView<Album> listView;
@@ -57,6 +64,12 @@ public class UserController extends Application implements Serializable {
 	private static int index = -1;
 	
 	public static String albumName;
+	
+	
+	/**
+	 * This method loads the home page after the User logs in
+	 * @param primaryStage		the scene to be loaded
+	 */
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -104,6 +117,10 @@ public class UserController extends Application implements Serializable {
 	}
 
 	
+	/**
+	 * This method allows a user to create a new album object
+	 * @param e		a button press
+	 */
 	
 	@FXML
 	public void create(ActionEvent e) {
@@ -153,6 +170,11 @@ public class UserController extends Application implements Serializable {
 		
 	}
 	
+	/**
+	 * This method allows a user to delete an album object
+	 * @param e		a button press
+	 */
+	
 	@FXML
 	public void delete(ActionEvent e) {
 		int i = listView.getSelectionModel().getSelectedIndex();
@@ -171,6 +193,11 @@ public class UserController extends Application implements Serializable {
 		}
 	}
 	
+	/**
+	 * This method allows a user to open an album object
+	 * @param e		a button press
+	 */
+	
 	@FXML
 	public void open(ActionEvent e) {
 		try {
@@ -182,6 +209,11 @@ public class UserController extends Application implements Serializable {
 			e1.printStackTrace();
 		}
 	}
+	
+	/**
+	 * This method allows a user to rename an album object
+	 * @param e		a button press
+	 */
 	
 	@FXML
 	public void rename(ActionEvent e) {
@@ -221,6 +253,11 @@ public class UserController extends Application implements Serializable {
 		}
 		
 	}
+	
+	/**
+	 * This method allows a user to log out and returns to the log in screen
+	 * @param e		a button press
+	 */
 	
 	@FXML
 	public void logout(ActionEvent e) {

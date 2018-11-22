@@ -58,7 +58,7 @@ public class AdminController extends Application implements Serializable {
 	
 	/**
 	 * This method loads the home page after the Admin logs in
-	 * @param primaryStage		 
+	 * @param primaryStage		the scene to be loaded	 
 	 */
 	
 	@Override
@@ -363,7 +363,7 @@ public class AdminController extends Application implements Serializable {
 	}
 	
 	/**
-	 * 
+	 * This method shows the names of each user
 	 * @param newVal
 	 */
 	

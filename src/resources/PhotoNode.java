@@ -36,6 +36,10 @@ public class PhotoNode implements Serializable {
 		this.prev=prev;
 	}
 	
+	/**
+	 * Checks whether the photo list is empty
+	 * @return boolean value whether is empty or not
+	 */
 	public boolean isEmpty() {
 		if (data.equals(null)) {
 			return true;
@@ -51,6 +55,10 @@ public class PhotoNode implements Serializable {
 		ptr.next=newNode;
 		ptr.next.prev=ptr;
 	}*/
+	
+	/**
+	 * Deletes a photo from the list of photos
+	 */
 	
 	public void delete() {
 		if (prev == null && next == null) {
